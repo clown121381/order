@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yang.order.mapper.UserMapper">
+    <select id="findById" parameterType="long" resultType="com.yang.order.entity.User">
+        select * from t_user where id = #{id}
+    </select>
+    <select id="findAll" resultType="com.yang.order.entity.User">
+        select * from t_user limit #{index},#{limit}
+    </select>
+    <insert id="save" parameterType="com.yang.order.entity.User">
+        insert into t_user(username,password,nickname,gender,telephone,address,registerdate) values(#{username},#{password},#{nickname},#{gender},#{telephone},#{address},now())
+    </insert>
+    <delete id="delete" parameterType="long">
+        delete from t_user where id = #{id}
+    </delete>
+    <select id="count" resultType="int">
+        select count(*) from t_user
+    </select>
+</mapper>

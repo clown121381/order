@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yang.order.mapper.OrderMapper">
+    <resultMap id="orderMap" type="com.yang.order.entity.Order">
+        <id property="id" column="id"></id>
+        <result property="state" column="state"></result>
+        <result property="date" column="date"></result>
+        <association property="menu" column="mid" select="com.yang.order.mapper.MenuMapper.findById"></association>
+        <association property="user" column="uid" select="com.yang.order.mapper.UserMapper.findById"></association>
+    </resultMap>
+    <insert id="save" parameterType="com.yang.order.entity.Order">
+        insert into t_order(uid,mid,date,state) values(#{uid},#{menu.id},now(),#{state})
+    </insert>
+    <select id="findAllByUid" resultMap="orderMap">
+        select * from t_order where uid = #{uid} limit #{index},#{limit}
+    </select>
+
+    <select id="findAllByState" resultMap="orderMap">
+        select * from t_order where state = 0 limit #{index},#{limit}
+    </select>
+
+    <update id="updateState" parameterType="long">
+        update t_order set state = 1 where id=#{id}
+    </update>
+    <select id="findById" parameterType="long" resultMap="orderMap">
+        select * from t_order where id = #{id}
+    </select>
+
+    <select id="count" parameterType="long" resultType="int">
+        select count(*) from t_order where uid = #{uid}
+    </select>
+
+    <select id="countByState" resultType="int">
+        select count(*) from t_order where state = 0
+    </select>
+</mapper>
